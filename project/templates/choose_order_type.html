@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Выбор типа заказа{% endblock %}
+
+{% block div %}
+    width: 600px;
+    margin-top: 250px;
+    text-align: center;
+{% endblock %}
+
+{% block style %}
+    .return {
+        display: inline-block;
+        padding: 1px 10px;
+        text-decoration: none;
+        border-radius: 10px;
+        border: solid 1px black;
+        background: yellow;
+    }
+    .c {
+        border: 1px solid #333; /* Рамка */
+        display: inline-block;
+        padding: 2px 15px; /* Поля */
+        text-decoration: none; /* Убираем подчёркивание */
+        color: #000; /* Цвет текста */
+    }
+    .c:hover {
+        box-shadow: yellow; /* Тень */
+        background: linear-gradient(to bottom, #fcfff4, #e9e9ce); /* Градиент */
+        color: blue;
+    }
+{% endblock %}
+
+{% block body %}
+    <h2>
+        Выберите тип заказа:<br><br>
+        <a href="{{ url_for('product_order', product_id=product_id) }}" class="c">Обычный</a>&nbsp; &nbsp; &nbsp;
+        <a href="{{ url_for('serial_product_order', product_id=product_id) }}" class="c">Серийный</a><br><br>
+    </h2>
+
+    <a href="{{ url_for('catalog') }}" class="return">Назад</a>
+{% endblock %}

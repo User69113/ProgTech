@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}Подтверждение заказа{% endblock %}
+
+{% block div %}
+    width: 1000px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+{% endblock %}
+
+{% block style %}
+    .return {
+        display: inline-block;
+        padding: 1px 10px;
+        text-decoration: none;
+        border-radius: 10px;
+        border: solid 1px black;
+        background: yellow;
+    }
+    .order {
+        display: inline-block;
+        margin-top: 3px;
+        padding: 3px 10px;
+        font-size: 16pt;
+        text-decoration: none;
+        border-radius: 5px;
+        background: orange;
+        color: #C71585;
+    }
+    .order:hover {
+        background: #FF4500;
+        color: #FFC0CB;
+    }
+{% endblock %}
+
+{% block body %}
+    <h2 align="center">Подтверждение заказа</h2>
+
+    <form method="post">
+        <h4>
+            <h3>В вашу корзину входят следующие товары:</h3>
+
+            {% for el in products %}
+                {{ el.title }} ({{ el.number }} шт.)<br>
+            {% endfor %}
+
+            <h3>Заполните поля:</h3>
+
+            Номер банковской карты (без пробелов) <input type="text" name="card_number" id="card_number"><br>
+            Адрес доставки <input type="text" name="address" id="address"><br><br>
+
+            Для подтверждения заказа нажмите кнопку "Отправить"<br>
+
+            <button class="order" type="submit">Отправить</button>
+
+            {% for msg in get_flashed_messages(with_categories=True) %}
+            {% if msg[0] == 'success' %}
+            <h3><font color="green">{{ msg[1] }}</font></h3>
+            {% else %}
+            <h3><font color="red">{{ msg[1] }}</font></h3>
+            {% endif %}
+            {% endfor %}
+        </h4>
+    </form>
+
+    <br><a href="{{ url_for('catalog') }}" class="return">Назад</a>
+{% endblock %}

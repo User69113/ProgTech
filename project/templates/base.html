@@ -1,0 +1,25 @@
+<!doctype html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        div {
+            padding-top: 30px;
+            padding-left: 30px;
+            padding-bottom: 30px;
+            margin: 0 auto;
+            background: #DEB887;
+            background: linear-gradient(to top, #DEB887, #F5DEB3);
+            box-shadow: rgba(0, 0, 0, .8) 0 0 50px;
+            {% block div %}{% endblock %}
+        }
+        {% block style %}{% endblock %}
+    </style>
+</head>
+<body>
+    {% block head %}{% endblock %}
+    <div>
+        {% block body %}{% endblock %}
+    </div>
+</body>

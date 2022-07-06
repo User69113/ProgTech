@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block div %}
+    width: 1000px;
+    margin-top: 250px;
+{% endblock %}
+
+{% block style %}
+    .return {
+        display: inline-block;
+        padding: 1px 10px;
+        text-decoration: none;
+        border-radius: 10px;
+        border: solid 1px black;
+        background: yellow;
+    }
+{% endblock %}
+
+{% block body %}
+    <form method="post">
+        <h2>
+            Логин: <input type="text" name="login" id="login"><br>
+            Пароль: <input type="password" name="password" id="password"><br>
+            <input type="submit" value="Отправить"><br>
+
+            {% for msg in get_flashed_messages() %}
+            <h3><font color="red">{{ msg }}</font></h3>
+            {% endfor %}
+        </h2>
+
+        <a href="{{ url_for('index') }}" class="return">На главную страницу</a>
+    </form>
+{% endblock %}

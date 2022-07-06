@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Страница администратора{% endblock %}
+
+{% block div %}
+    width: 500px;
+    margin-top: 150px;
+{% endblock %}
+
+{% block style %}
+    a {
+        text-decoration: none;
+    }
+    .c {
+        border: 1px solid #333; /* Рамка */
+        display: inline-block;
+        padding: 20px 50px; /* Поля */
+        margin-bottom: 20px;
+        text-decoration: none; /* Убираем подчёркивание */
+        color: #000; /* Цвет текста */
+    }
+    .c:hover {
+        box-shadow: yellow; /* Тень */
+        background: linear-gradient(to bottom, #fcfff4, #e9e9ce); /* Градиент */
+        color: red;
+    }
+{% endblock %}
+
+{% block body %}
+    <h2 align="center">
+        <a href="{{ url_for('admin_customers') }}" class="c">Покупатели</a><br>
+        <a href="{{ url_for('admin_products') }}" class="c">Товары</a><br>
+        <a href="{{ url_for('admin_orders') }}" class="c">Заказы</a><br>
+
+        <a href="{{ url_for('index') }}" >Выйти</a>
+    </h2>
+{% endblock %}

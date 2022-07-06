@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block title %}Добро пожаловать{% endblock %}
+
+{% block div %}
+    width: 1000px;
+    margin-top: 150px;
+{% endblock %}
+
+{% block style %}
+    .return {
+        display: inline-block;
+        padding: 1px 10px;
+        text-decoration: none;
+        border-radius: 10px;
+        border: solid 1px black;
+        background: yellow;
+    }
+    .c {
+        border: 1px solid #333; /* Рамка */
+        display: inline-block;
+        padding: 20px 158px; /* Поля */
+        font-size: 20pt;
+        font-weight: bold;
+        text-decoration: none; /* Убираем подчёркивание */
+        position: right;
+        color: #000; /* Цвет текста */
+    }
+    .c:hover {
+        box-shadow: yellow; /* Тень */
+        background: linear-gradient(to bottom, #fcfff4, #e9e9ce); /* Градиент */
+        color: blue;
+    }
+    .add {
+        display: inline-block;
+        margin-top: 3px;
+        padding: 4px 15px;
+        font-size: 16pt;
+        text-decoration: none;
+        border-radius: 3px;
+        background: orange;
+        color: #C71585;
+    }
+    .add:hover {
+        background: #FF4500;
+        color: #FFC0CB;
+    }
+    .order {
+        display: inline-block;
+        margin-top: 3px;
+        padding: 4px 15px;
+        font-size: 16pt;
+        text-decoration: none;
+        border-radius: 3px;
+        background: orange;
+        color: #C71585;
+    }
+    .order:hover {
+        background: #FF4500;
+        color: #FFC0CB;
+    }
+{% endblock %}
+
+{% block head %}
+    <h3 align="right">Профиль: {{ current_user.get_name() }}</h3>
+    <a href="{{url_for('customer_basket')}}" class="c">Моя корзина</a>
+    <a href="{{url_for('customer_orders')}}" class="c">Мои заказы</a>
+    <a href="{{url_for('logout')}}" class="c">Выйти из профиля</a>
+{% endblock %}
+
+{% block body %}
+    <form method="post">
+        {% if products|length == 0 %}
+            <p>(пусто)</p>
+        {% endif %}
+
+        <p>Сортировать по цене: от <input type="text" name="from" size="5" value="-"> до <input type="text" name="to"
+                                                                                                size="5" value="-"></p>
+
+        <input type="text" name="search" size="20">
+        <input type="submit" value="Поиск">
+
+        {% for el in products %}
+            <h2>
+                <img src="{{ url_for('load_image', product_id = el.id) }}" width="200" height="200"><br>
+                {{ el.title }}<br>
+                Цена: {{ el.price }}<br>
+                Описание: {{ el.description }}<br>
+                <a href="{{ url_for('add_to_basket', product_id=el.id) }}" class="add">Добавать в корзину</a><br>
+                <a href="{{ url_for('choose_order_type', product_id=el.id) }}" class="order">Заказать</a>
+            </h2>
+            <br>
+        {% endfor %}
+    </form>
+
+    <br><a href="{{ url_for('index') }}" class="return">На главную страницу</a>
+{% endblock %}

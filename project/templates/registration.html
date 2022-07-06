@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Регистрация{% endblock %}
+
+{% block div %}
+    width: 1000px;
+    margin-top: 250px;
+{% endblock %}
+
+{% block style %}
+    .return {
+        display: inline-block;
+        padding: 1px 10px;
+        text-decoration: none;
+        border-radius: 10px;
+        border: solid 1px black;
+        background: yellow;
+    }
+{% endblock %}
+
+{% block body %}
+    <form method="post">
+        <h2>
+            Введите данные:<br><br>
+
+            ФИО: <input type="text" name="name" id="name"><br>
+            Номер телефона: <input type="text" name="phone_number" id="phone_number"><br>
+            Пароль: <input type="password" name="password" id="password"><br>
+            <input type="submit" value="Отправить"><br>
+
+            {% for msg in get_flashed_messages(with_categories=True) %}
+            {% if msg[0] == 'success' %}
+            <h3><font color="green">{{ msg[1] }}</font></h3>
+            {% else %}
+            <h3><font color="red">{{ msg[1] }}</font></h3>
+            {% endif %}
+            {% endfor %}
+        </h2>
+
+        <a href="{{ url_for('index') }}" class="return">На главную страницу</a>
+    </form>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Моя корзина{% endblock %}
+
+{% block div %}
+    width: 1000px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+{% endblock %}
+
+{% block style %}
+    .return {
+        display: inline-block;
+        padding: 1px 10px;
+        text-decoration: none;
+        border-radius: 10px;
+        border: solid 1px black;
+        background: yellow;
+    }
+    button.remove {
+        background: red;
+    }
+    .order {
+        display: inline-block;
+        margin-top: 3px;
+        padding: 4px 15px;
+        font-size: 16pt;
+        text-decoration: none;
+        border-radius: 3px;
+        background: orange;
+        color: #C71585;
+    }
+    .order:hover {
+        background: #FF4500;
+        color: #FFC0CB;
+    }
+{% endblock %}
+
+{% block body %}
+    <h2 align="center">Моя корзина</h2>
+
+    <form method="post">
+        {% if products|length == 0 %}
+            <p>(в вашей корзине пока нет товаров)</p>
+        {% endif %}
+
+        {% for el in products %}
+            <p>
+                <img src="{{ url_for('load_image', product_id=el.id) }}" width="200" height="200"><br>
+                {{ el.title }}<br>
+                количество: {{ el.number }}<br>
+                <button class="remove" type="submit" name="delete" value="{{ el.id }}">Удалить</button><br>
+            </p>
+        {% endfor %}
+    </form>
+
+    {% if products|length != 0 %}
+        <a href="{{ url_for('customer_basket_order') }}" class="order">Заказать все</a><br><br>
+    {% endif %}
+
+    <a href="{{ url_for('catalog') }}" class="return">Назад</a>
+{% endblock %}

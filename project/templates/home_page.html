@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Добро пожаловать{% endblock %}
+
+{% block div %}
+    width: 600px;
+    margin-top: 250px;
+    text-align: center;
+{% endblock %}
+
+{% block style %}
+    .c {
+        border: 1px solid #333; /* Рамка */
+        display: inline-block;
+        padding: 2px 15px; /* Поля */
+        text-decoration: none; /* Убираем подчёркивание */
+        color: #000; /* Цвет текста */
+    }
+    .c:hover {
+        box-shadow: yellow; /* Тень */
+        background: linear-gradient(to bottom, #fcfff4, #e9e9ce); /* Градиент */
+        color: blue;
+    }
+{% endblock %}
+
+{% block body %}
+    <h2>
+        Добро пожаловать<br>в продовольственный интернет-магазин!<br><br>
+        <a href="{{ url_for('registration') }}" class="c">Регистрация</a>&nbsp; &nbsp; &nbsp;
+        <a href="{{ url_for('login') }}" class="c">Авторизация</a><br><br>
+    </h2>
+
+    <h4><a href="{{ url_for('admin_login') }}" class="c">Авторизация (администратор)</a></h4>
+{% endblock %}

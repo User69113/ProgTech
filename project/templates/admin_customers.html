@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Информация о покупателях{% endblock %}
+
+{% block div %}
+    width: 1000px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+{% endblock %}
+
+{% block style %}
+    .return {
+        display: inline-block;
+        padding: 1px 10px;
+        text-decoration: none;
+        border-radius: 10px;
+        border: solid 1px black;
+        background: yellow;
+    }
+    button.new {
+        background: red;
+    }
+{% endblock %}
+
+{% block body %}
+    <h3>Информация о покупателях</h3>
+
+    <form method="post">
+        {% if customers|length == 0 %}
+            <p>(нет зарегистрированных покупателей)</p>
+        {% endif %}
+
+        {% for el in customers %}
+            <p>
+                {{ el.name }}<br>
+                {% if el.e_mail|length != 0 %}e-mail: {{ el.e_mail }}<br>{% endif %}
+                телефон: {{ el.phone_number }}<br>
+                <button class="new" type="submit" name="delete" value="{{ el.id }}">Удалить профиль</button><br><br>
+            </p>
+        {% endfor %}
+    </form>
+
+    <a href="{{ url_for('admin_home_page') }}" class="return">Назад</a>
+{% endblock %}

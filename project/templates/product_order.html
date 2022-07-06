@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Заказ товара{% endblock %}
+
+{% block div %}
+    width: 800px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+{% endblock %}
+
+{% block style %}
+    .return {
+        display: inline-block;
+        padding: 1px 10px;
+        text-decoration: none;
+        border-radius: 10px;
+        border: solid 1px black;
+        background: yellow;
+    }
+    button.send {
+        background: grey;
+    }
+{% endblock %}
+
+{% block body %}
+    <h2>
+        Заказываемый товар: {{ product.title }}<br>
+        Цена: {{ product.price }}
+    </h2>
+
+    <form method="post">
+        <h3>
+            Заполните поля:<br><br>
+
+            Количество: <input type="text" size="10" name="number" id="number"><br>
+            Номер банковской карты (без пробелов): <input type="text" name="card_number" id="card_number"><br>
+            Адрес доставки: <input type="text" name="address" id="address"><br>
+
+            <button class="send" type="submit">Отправить</button>
+
+            {% for msg in get_flashed_messages(with_categories=True) %}
+            {% if msg[0] == 'success' %}
+            <h3><font color="green">{{ msg[1] }}</font></h3>
+            {% else %}
+            <h3><font color="red">{{ msg[1] }}</font></h3>
+            {% endif %}
+            {% endfor %}
+        </h3>
+    </form>
+
+    <a href="{{ url_for('catalog') }}" class="return">Назад</a>
+{% endblock %}

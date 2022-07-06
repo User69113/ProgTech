@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Мои заказы{% endblock %}
+
+{% block div %}
+    width: 1000px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+{% endblock %}
+
+{% block style %}
+    .return {
+        display: inline-block;
+        padding: 1px 10px;
+        text-decoration: none;
+        border-radius: 10px;
+        border: solid 1px black;
+        background: yellow;
+    }
+    div2 {
+            display: inline-block;
+            vertical-align: top;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            border: solid 1px black;
+            background: orange;
+            box-shadow: rgba(0, 0, 0, .8) 0 0 5px;
+    }
+{% endblock %}
+
+{% block body %}
+    <h2 align="center">Мои заказы</h2>
+
+    <form method="post">
+        {% if orders|length == 0 %}
+            <p>(нет заказов)</p>
+        {% endif %}
+
+        {% for i in range(orders|length) %}
+            <div2>
+                <p>
+                    Дата: {{ orders[i].formation_date }}<br>
+
+                    Тип заказа:
+                    {% if orders[i].is_serial == 0 %}
+                        обычный
+                    {% else %}
+                        серийный
+                    {% endif %}<br>
+
+                    Товары заказа:
+                    {% for j in range(orders_products[i]|length) %}
+                        {{ orders_products[i][j].title }} ({{ orders_products[i][j].number }} шт.)
+                        {% if j != orders_products[i]|length - 1%}
+                            ,
+                        {% endif %}
+                    {% endfor %}<br>
+
+                    Статус:
+                    {% if orders[i].status == 0 %}
+                        в процессе отправки
+                    {% elif orders[i].status == 1 %}
+                        отправлено
+                    {% else %}
+                        доставлено
+                    {% endif %}<br><br>
+                </p>
+            </div2><br>
+        {% endfor %}
+    </form>
+
+    <a href="{{ url_for('catalog') }}" class="return">Назад</a>
+{% endblock %}

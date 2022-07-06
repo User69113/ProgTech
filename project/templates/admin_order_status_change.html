@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Изменение статуса заказа{% endblock %}
+
+{% block div %}
+    width: 800px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+{% endblock %}
+
+{% block style %}
+    .return {
+        display: inline-block;
+        padding: 1px 10px;
+        text-decoration: none;
+        border-radius: 10px;
+        border: solid 1px black;
+        background: yellow;
+    }
+    button.edit {
+        background: orange;
+    }
+{% endblock %}
+
+{% block body %}
+    <h3>
+        Заказ №{{ order.id }}<br>
+        Пользователь: {{ customer.name }}
+    </h3>
+
+    <form method="post">
+        <p>
+            Введите новый статус (0 - в процессе отправки (для серийных заказов), 1 - отправлено (для обычных заказов),
+            2 - доставлено):<br>
+
+            <input type="text" size="2" name="status" value="{{ order.status }}">
+            <button class="edit" type="submit">Редактировать</button><br><br>
+        </p>
+
+        {% for msg in get_flashed_messages(with_categories=True) %}
+            {% if msg[0] == 'success' %}
+                <h3><font color="green">{{ msg[1] }}</font></h3>
+            {% else %}
+                <h3><font color="red">{{ msg[1] }}</font></h3>
+            {% endif %}
+        {% endfor %}
+    </form>
+
+    <a href="{{ url_for('admin_orders') }}" class="return">Назад</a><br>
+    <a href="{{ url_for('index') }}" class="return">На главную страницу</a>
+{% endblock %}

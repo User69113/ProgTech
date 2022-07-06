@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}Заказы{% endblock %}
+
+{% block div %}
+    width: 1000px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+{% endblock %}
+
+{% block style %}
+    div2 {
+            display: inline-block;
+            vertical-align: top;
+            padding-left: 20px;
+            padding-right: 20px;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            border: solid 1px black;
+            background: orange;
+            box-shadow: rgba(0, 0, 0, .8) 0 0 5px;
+    }
+    .change {
+        display: inline-block;
+        margin-top: 3px;
+        padding: 2px 10px;
+        text-decoration: none;
+        border-radius: 3px;
+        border: solid 1px black;
+        background: yellow;
+    }
+    .return {
+        display: inline-block;
+        padding: 1px 10px;
+        text-decoration: none;
+        border-radius: 10px;
+        border: solid 1px black;
+        background: yellow;
+    }
+{% endblock %}
+
+{% block body %}
+    <h2 align="center">Заказы</h2>
+
+    <form method="post">
+        {% if orders|length == 0 %}
+            <p>(нет заказов)</p>
+        {% endif %}
+
+        {% for i in range(orders|length) %}
+            <div2>
+                <p>
+                    № заказа: {{ orders[i].id }}<br>
+
+                    Пользователь: {{ customers[i].name }}<br>
+
+                    Тип заказа:
+                    {% if orders[i].is_serial == 0 %}
+                        обычный
+                    {% else %}
+                        серийный
+                    {% endif %}<br>
+
+                    Статус:
+                    {% if orders[i].status == 0 %}
+                        в процессе отправки
+                    {% elif orders[i].status == 1 %}
+                        отправлено
+                    {% else %}
+                        доставлено
+                    {% endif %}<br>
+
+                    <a href="{{ url_for('admin_order_status_change', order_id=orders[i].id) }}"
+                       class="change">Изменить статус</a><br>
+                </p>
+            </div2><br>
+        {% endfor %}
+    </form>
+
+    <a href="{{ url_for('admin_home_page') }}" class="return">Назад</a>
+{% endblock %}
