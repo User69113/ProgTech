@@ -84,7 +84,7 @@
             <h2>
                 <img src="{{ url_for('load_image', product_id = el.id) }}" width="200" height="200"><br>
                 {{ el.title }}<br>
-                Цена: {{ el.price }}<br>
+                Цена: {{ el.price }} руб.<br>
                 Описание: {{ el.description }}<br>
                 <a href="{{ url_for('add_to_basket', product_id=el.id) }}" class="add">Добавать в корзину</a><br>
                 <a href="{{ url_for('choose_order_type', product_id=el.id) }}" class="order">Заказать</a>
@@ -92,6 +92,4 @@
             <br>
         {% endfor %}
     </form>
-
-    <br><a href="{{ url_for('index') }}" class="return">На главную страницу</a>
 {% endblock %}

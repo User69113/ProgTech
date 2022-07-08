@@ -42,21 +42,22 @@
     <form method="post">
         {% if products|length == 0 %}
             <p>(в вашей корзине пока нет товаров)</p>
-        {% endif %}
-
-        {% for el in products %}
+        {% else %}
+            {% for el in products %}
             <p>
                 <img src="{{ url_for('load_image', product_id=el.id) }}" width="200" height="200"><br>
                 {{ el.title }}<br>
+                цена: {{ el.price }} руб.<br>
                 количество: {{ el.number }}<br>
                 <button class="remove" type="submit" name="delete" value="{{ el.id }}">Удалить</button><br>
             </p>
-        {% endfor %}
-    </form>
+            {% endfor %}
 
-    {% if products|length != 0 %}
-        <a href="{{ url_for('customer_basket_order') }}" class="order">Заказать все</a><br><br>
-    {% endif %}
+            <h3>Общая цена: {{ total_sum }} руб.</h3>
+
+            <a href="{{ url_for('customer_basket_order') }}" class="order">Заказать все</a><br><br>
+        {% endif %}
+    </form>
 
     <a href="{{ url_for('catalog') }}" class="return">Назад</a>
 {% endblock %}

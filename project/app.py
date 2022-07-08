@@ -197,7 +197,7 @@ def add_to_basket(product_id):
         if res:
             flash('Товар добавлен в вашу корзину!', category='success')
         else:
-            flash('При добавлении товара в корзину произошла ошибка.', category='fail')
+            flash('Заказываемый товар уже есть в вашей корзине.', category='fail')
 
     return render_template('add_to_basket.html', product=product)
 
@@ -240,13 +240,15 @@ def product_order(product_id):
                 flash('Неверно заполнены поля "Количество"/"Номер банковской карты".', category='fail')
                 return render_template('product_order.html', product=product)
 
+        total_sum = product['price'] * number
+
         list_of_products = []
         list_of_numbers = []
         list_of_products.append(product_id)
         list_of_numbers.append(number)
 
         dbase.add_order(customer_id, address, 0, -1, list_of_products, list_of_numbers)
-        flash('Продукт успешно заказан!', category='success')
+        flash(f'Вы успешно оформили заказ на сумму {total_sum} руб.', category='success')
 
     return render_template('product_order.html', product=product)
 
@@ -259,6 +261,7 @@ def serial_product_order(product_id):
 
     customer_id = current_user.get_id()
     product = dbase.get_product_by_id(product_id)
+
     if request.method == 'POST':
         number = request.form['number']
         card_number = request.form['card_number']
@@ -287,13 +290,15 @@ def serial_product_order(product_id):
                 flash('Неверно заполнены поля "Количество"/"Номер банковской карты".', category='fail')
                 return render_template('serial_product_order.html', product=product)
 
+        total_sum = product['price'] * number
+
         list_of_products = []
         list_of_numbers = []
         list_of_products.append(product_id)
         list_of_numbers.append(number)
 
         dbase.add_order(customer_id, address, 1, day_of_week, list_of_products, list_of_numbers)
-        flash('Продукт успешно заказан!', category='success')
+        flash(f'Вы успешно оформили серийный заказ на сумму {total_sum} руб.', category='success')
     return render_template('serial_product_order.html', product=product)
 
 
@@ -305,29 +310,15 @@ def customer_basket():
 
     customer_id = current_user.get_id()
     products = dbase.get_products_in_customer_basket(customer_id)
+    total_sum = 0
+    for el in products:
+        total_sum += el['price'] * el['number']
     if request.method == 'POST':
         customer_id = current_user.get_id()
         product_id = request.form['delete']
         dbase.delete_product_from_basket(customer_id, product_id)
         return redirect(url_for('customer_basket'))
-    return render_template('customer_basket.html', products=products)
-
-
-@app.route('/customer_orders', methods=['post', 'get'])
-@login_required
-def customer_orders():
-    db = get_db()
-    dbase = FDataBase(db)
-
-    customer_id = current_user.get_id()
-    orders = dbase.get_customer_orders(customer_id)
-
-    orders_products = []
-    for el in orders:
-        order_products = dbase.get_order_products(el['id'])
-        orders_products.append(order_products)
-
-    return render_template('customer_orders.html', orders=orders, orders_products=orders_products)
+    return render_template('customer_basket.html', products=products, total_sum=total_sum)
 
 
 @app.route('/customer_basket_order', methods=['post', 'get'])
@@ -338,6 +329,10 @@ def customer_basket_order():
 
     customer_id = current_user.get_id()
     products = dbase.get_products_in_customer_basket(customer_id)
+    total_sum = 0
+    for el in products:
+        total_sum += el['price'] * el['number']
+
     if request.method == 'POST':
         card_number = request.form['card_number']
         address = request.form['address']
@@ -360,12 +355,29 @@ def customer_basket_order():
 
                 dbase.add_order(customer_id, address, 0, -1, list_of_products, list_of_numbers)
                 dbase.delete_customer_basket(customer_id)
-                flash('Товары из вашей корзины успешно заказаны!', category='success')
+                flash(f'Вы успешно заказали товары из корзины на сумму {total_sum} руб.', category='success')
             except ValueError:
                 flash('Неверно заполнено поле "Номер банковской карты".', category='fail')
                 return render_template('customer_basket_order.html', products=products)
 
-    return render_template('customer_basket_order.html', products=products)
+    return render_template('customer_basket_order.html', products=products, total_sum=total_sum)
+
+
+@app.route('/customer_orders', methods=['post', 'get'])
+@login_required
+def customer_orders():
+    db = get_db()
+    dbase = FDataBase(db)
+
+    customer_id = current_user.get_id()
+    orders = dbase.get_customer_orders(customer_id)
+
+    orders_products = []
+    for el in orders:
+        order_products = dbase.get_order_products(el['id'])
+        orders_products.append(order_products)
+
+    return render_template('customer_orders.html', orders=orders, orders_products=orders_products)
 
 
 @app.route('/admin_login', methods=['post', 'get'])

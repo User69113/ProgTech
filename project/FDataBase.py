@@ -71,6 +71,17 @@ class FDataBase:
             return False
         return True
 
+    def get_products_in_customer_basket(self, customer_id):
+        try:
+            self.__cur.execute("SELECT p.id, p.title, p.price, b.number "
+                               "FROM baskets b JOIN products p "
+                               "ON b.product_id = p.id AND b.customer_id = ? ", (customer_id,))
+            res = self.__cur.fetchall()
+        except sqlite3.Error as e:
+            print("Ошибка чтения из БД" + str(e))
+            return False
+        return res
+
     def get_product_by_id(self, product_id):
         try:
             self.__cur.execute("SELECT * FROM products WHERE id = ?", (product_id,))
@@ -179,17 +190,6 @@ class FDataBase:
             print("Ошибка чтения из БД " + str(e))
 
         return False
-
-    def get_products_in_customer_basket(self, customer_id):
-        try:
-            self.__cur.execute("SELECT p.id, p.title, b.number "
-                               "FROM baskets b JOIN products p "
-                               "ON b.product_id = p.id AND b.customer_id = ? ", (customer_id,))
-            res = self.__cur.fetchall()
-        except sqlite3.Error as e:
-            print("Ошибка чтения из БД" + str(e))
-            return False
-        return res
 
     def is_registration_exist(self, phone_number):
         try:

@@ -59,7 +59,7 @@
             <p>
                 <img src="{{ url_for('load_image', product_id=el.id) }}" width="200" height="200"><br>
                 <b>{{ el.title }}</b><br>
-                <b>цена:</b> {{ el.price }}<br>
+                <b>цена:</b> {{ el.price }} руб.<br>
                 <b>описание:</b> {{ el.description }}<br>
                 <button class="remove" type="submit" name="delete" value="{{ el.id }}">Удалить</button><br>
                 <a href="{{ url_for('product_price_change', product_id=el.id) }}" class="change">Изменить цену</a><br>
