@@ -490,8 +490,8 @@ def admin_add_product():
                 flash('Указанного файла не существует.', category='fail')
             except FileNotFoundError:
                 flash('Файл не найден.', category='fail')
-            except:
-                flash('Not work')
+        else:
+            flash('Неверное расширение.', category='fail')
     return render_template('admin_add_product.html')
 
 
