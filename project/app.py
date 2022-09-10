@@ -464,9 +464,13 @@ def admin_add_product():
         description = request.form['description']
         file = request.files['file']
 
-        if len(title) == 0 or len(price) == 0 or len(description) == 0 or not file:
+        if len(title) == 0 or len(price) == 0 or len(description) == 0:
             flash('Вы заполнили не все поля.', category='fail')
             return render_template('admin_add_product.html')
+
+        if not file:
+            file = app.open_resource(app.root_path + url_for('static', filename='images/no-image.png'), "rb")
+            file.filename = 'no-image.png'
 
         try:
             price = int(price)
@@ -486,6 +490,8 @@ def admin_add_product():
                 flash('Указанного файла не существует.', category='fail')
             except FileNotFoundError:
                 flash('Файл не найден.', category='fail')
+            except:
+                flash('Not work')
     return render_template('admin_add_product.html')
 
 
